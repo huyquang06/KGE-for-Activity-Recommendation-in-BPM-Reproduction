@@ -1,0 +1,78 @@
+# bpmai_lastrev_caise_onlyAfter2-relationalTucker-1vsAll-kl
+job.type: train
+
+dataset.name: bpmai_lastrev_caise_onlyAfter2
+
+# training settings (fixed)
+train:
+  max_epochs: 400
+  auto_correct: True
+  type: 1vsAll #KvsAll 1vsAll negative_sampling
+  loss: kl #kl bce margin_ranking
+  loss_arg: .nan
+  optimizer.default.type: Adam
+  lr_scheduler: ReduceLROnPlateau
+  lr_scheduler_args:
+    factor: 0.95
+    mode: max
+    patience: 1
+    threshold: 0.0001
+  batch_size: 256
+  optimizer_args.lr: 0.035126
+    
+# validation/evaluation settings (fixed)
+valid:
+  every: 5
+  metric: mean_reciprocal_rank_tail #_filtered_with_test
+  filter_with_test: False
+  early_stopping:
+    patience: 10
+    min_threshold.epochs: 50
+    min_threshold.metric_value: 0.05
+
+eval:
+  batch_size: 256
+
+entity_ranking:
+  hits_at_k_s: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 50, 100, 1000]
+  metrics_per:
+    argument_frequency: False
+    head_and_tail: True
+    relation_type: False
+
+import:
+- reciprocal_relations_model
+- relational_tucker3
+
+model: reciprocal_relations_model
+
+reciprocal_relations_model:
+  base_model:
+    entity_embedder:
+      dim: 32
+    relation_embedder:
+      dim: -1
+      base_embedder:
+        type: lookup_embedder
+    type: relational_tucker3
+
+relational_tucker3:
+  relation_embedder:
+    regularize_args:
+        weighted: True
+  entity_embedder.regularize_weight: 2.488597e-13
+  relation_embedder.regularize_weight: 0.000054	
+  relational_tucker3.entity_embedder.dropout: 0.187915
+  relation_embedder.dropout: 0.429517
+    
+lookup_embedder:
+  initialize: xavier_normal_
+  initialize_args:
+    normal_:
+      mean: 0.0
+      std: 0.422523
+    xavier_normal_:
+      gain: 1.0
+  dim: 16
+  regularize: 'l2'
+  regularize_args.weighted: True 

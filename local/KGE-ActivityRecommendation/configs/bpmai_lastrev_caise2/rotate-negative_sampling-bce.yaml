@@ -1,0 +1,85 @@
+# bpmai_lastrev_caise2-negative_sampling-KvsAll-bce
+job.type: train
+
+dataset.name: bpmai_lastrev_caise2
+
+# training settings (fixed)
+train:
+  max_epochs: 400
+  auto_correct: True
+  type: negative_sampling #KvsAll 1vsAll negative_sampling
+  loss: bce #kl bce margin_ranking
+  loss_arg: .nan
+  optimizer.default.type: Adam
+  lr_scheduler: ReduceLROnPlateau
+  lr_scheduler_args:
+    factor: 0.95
+    mode: max
+    patience: 1
+    threshold: 0.0001
+  optimizer_args.lr: 0.038522			
+  batch_size: 128
+  subbatch_auto_tune: True #If a batch runs out of memory: repeatedly half the subbatch size until the batch succeeds.
+  
+# validation/evaluation settings (fixed)
+
+valid:
+  every: 5
+  metric: mean_reciprocal_rank_tail #_filtered_with_test
+  filter_with_test: False
+  early_stopping:
+    patience: 10
+    min_threshold.epochs: 50
+    min_threshold.metric_value: 0.05
+
+eval:
+  batch_size: 256
+
+entity_ranking:
+  hits_at_k_s: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 50, 100, 1000]
+  metrics_per:
+    argument_frequency: False
+    head_and_tail: True
+    relation_type: False
+
+import:
+- rotate
+- reciprocal_relations_model
+
+lookup_embedder:
+  dim: 128
+  initialize: xavier_normal_
+  initialize_args:
+    normal_:
+      mean: 0.0
+      std: 0.216307
+    xavier_normal_:
+      gain: 1.0
+    xavier_uniform_:
+      gain: 1.0
+  regularize: 'l2'
+    #weighted: True
+
+model: reciprocal_relations_model
+
+reciprocal_relations_model:
+  base_model:
+    entity_embedder:
+      dim: 128
+    relation_embedder:
+      dim: -1
+    type: rotate
+
+rotate:
+  entity_embedder:
+    dropout: -0.082608			
+    regularize_weight: 1.210124e-09	
+  l_norm: 2.0
+  relation_embedder:
+    dropout: -0.353485		
+    regularize_weight: 1.459351e-09  
+ 
+negative_sampling:
+  implementation: triple
+  num_samples.s: 2
+  num_samples.o: 942

@@ -1,0 +1,82 @@
+# bpmai_lastrev_caise-transformer-1vsAll-kl
+job.type: train
+
+dataset.name: bpmai_lastrev_caise
+
+# training settings (fixed)
+train:
+  max_epochs: 400
+  auto_correct: True
+  type: 1vsAll #KvsAll 1vsAll negative_sampling
+  loss: kl #kl bce margin_ranking
+  loss_arg: .nan
+  optimizer.default.type: Adam
+  lr_scheduler: ReduceLROnPlateau
+  lr_scheduler_args:
+    factor: 0.95
+    mode: max
+    patience: 1
+    threshold: 0.0001
+  batch_size: 1024
+  optimizer_args.lr: 0.002229		
+
+# validation/evaluation settings (fixed)
+valid:
+  every: 5
+  metric: mean_reciprocal_rank_tail #_filtered_with_test
+  filter_with_test: False
+  early_stopping:
+    patience: 10
+    min_threshold.epochs: 50
+    min_threshold.metric_value: 0.05
+
+eval:
+  batch_size: 256
+
+entity_ranking:
+  hits_at_k_s: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 50, 100, 1000]
+  metrics_per:
+    argument_frequency: False
+    head_and_tail: True
+    relation_type: False
+
+import:
+- reciprocal_relations_model
+- transformer
+
+model: reciprocal_relations_model
+
+reciprocal_relations_model:
+  base_model:
+    type: transformer
+   
+transformer:
+  entity_embedder:
+    type: lookup_embedder
+  relation_embedder:
+    regularize_args:
+        weighted: True
+    type: lookup_embedder
+
+lookup_embedder:
+  initialize: normal_
+  initialize_args:
+    normal_:
+      mean: 0.0
+      std: 0.013865		
+    xavier_normal_:
+      gain: 1.0
+    xavier_uniform_:
+      gain: 1.0
+  dim: 32
+  regularize: 'l3'
+
+transformer:
+  encoder:
+    dim_feedforward: 640
+    dropout: 0.07815
+    activation: gelu
+  entity_embedder.regularize_weight: 0.000001	
+  relation_embedder.regularize_weight: 0.02271
+  transformer.entity_embedder.dropout: -0.112473	
+  transformer.relation_embedder.dropout: -0.346566	

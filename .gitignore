@@ -1,21 +1,53 @@
+# Python
 *__pycache__/
+*.pyc
+.mypy_cache
+.ipynb_checkpoints/
+kge.egg-info
+/libkge.egg-info/
+kge_env/
+venv/
+.venv/
+
+# IDE / OS
 .idea/
+.vscode/
+.DS_Store
+Thumbs.db
+.projectile
+
+# libKGE
 local/*
 !local/README
+!local/KGE-ActivityRecommendation/
+local/KGE-ActivityRecommendation/bpmai datasets/
 /data/*
 !data/*.sh
 !data/preprocess/
-/trace.csv
-*.csv
-*.pyc
-.mypy_cache
+!data/bpmai_*/
+data/**/*.pckl
 /trace.yaml
-kge.egg-info
 docs/_build
 *.log
 *.prof
-/libkge.egg-info/
+/tests/data/dataset_test/*.pckl
+
+# Checkpoint
+*.pt
+*.pth
+*.ckpt
+
+# AnyBURL (output lớn)
+anyburl/
+*.jar
+
+# CSV: ignore mặc định, trừ kết quả chung của nhóm
+*.csv
+!results/**/*.csv
+!local/KGE-ActivityRecommendation/evaluation_test_context/**/*.csv
 !/docs/examples/dump-example-model.csv
 !/docs/examples/dump-example-search.csv
-/.projectile
-/tests/data/dataset_test/*.pckl
+
+# env: chỉ giữ versions.txt
+env/*
+!env/versions.txt

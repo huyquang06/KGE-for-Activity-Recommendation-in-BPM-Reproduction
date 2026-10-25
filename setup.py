@@ -24,7 +24,7 @@ setup(
         # LibKGE uses numba typed-dicts which is part of the experimental numba API
         # see http://numba.pydata.org/numba-doc/0.50.1/reference/pysupported.html
         "numba>=0.50.0",
-        "hpbandster",
+        #"hpbandster",
         "ConfigSpace",
         "pytest-shutil",
         "igraph",

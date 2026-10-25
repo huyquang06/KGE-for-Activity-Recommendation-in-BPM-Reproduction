@@ -13,5 +13,13 @@ from kge.job.search import SearchJob
 from kge.job.search_grid import GridSearchJob
 from kge.job.search_manual import ManualSearchJob
 from kge.job.search_auto import AutoSearchJob
-from kge.job.search_ax import AxSearchJob
-from kge.job.search_grash import GraSHSearchJob
+
+try:
+    from kge.job.search_ax import AxSearchJob
+except Exception:
+    pass
+
+try:
+    from kge.job.search_grash import GraSHSearchJob
+except Exception:
+    pass

@@ -1,0 +1,61 @@
+# bpmai_lastrev_caise-distmult-KvsAll-kl
+job.type: train
+
+dataset.name: bpmai_lastrev_caise 
+
+# training settings (fixed)
+train:
+  max_epochs: 400
+  auto_correct: True
+  batch_size: 512
+  type: KvsAll
+  loss: kl
+  optimizer: Adam
+  optimizer_args.lr: 0.011554
+  lr_scheduler: ReduceLROnPlateau
+  lr_scheduler_args.mode: max
+  lr_scheduler_args.factor: 0.95
+  lr_scheduler_args.threshold: 0.0001
+  lr_scheduler_args.patience: 7
+  
+KvsAll:
+  label_smoothing: 0.177418
+
+# validation/evaluation settings (fixed)
+valid:
+  every: 5
+  metric: mean_reciprocal_rank_tail #_filtered_with_test
+  filter_with_test: False
+  early_stopping:
+    patience: 10
+    min_threshold.epochs: 50
+    min_threshold.metric_value: 0.05
+
+eval:
+  batch_size: 256
+
+entity_ranking:
+  hits_at_k_s: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 50, 100, 1000]
+  metrics_per:
+    argument_frequency: False
+    head_and_tail: True
+    relation_type: False
+
+import: [distmult, reciprocal_relations_model]
+reciprocal_relations_model.base_model.type: distmult
+model: reciprocal_relations_model
+
+lookup_embedder:
+  dim: 512
+  initialize: xavier_normal_
+  initialize_args.normal_.mean: 0.0
+  initialize_args.normal_.std: 0.004149
+  initialize_args.xavier_normal_.gain: 1.0
+  regularize: 'l3'
+  regularize_args.weighted: False
+
+distmult:
+  entity_embedder.regularize_weight: 1.286853e-15
+  relation_embedder.regularize_weight: 4.103044e-20
+  entity_embedder.dropout: -0.342981
+  relation_embedder.dropout: -0.100317

@@ -1,0 +1,15 @@
+[Repo tác giả bài báo]
+URL: https://github.com/keyvan-amiri/KGE-ActivityRecommendation
+Commit: 47b4db82bbd2d2f21f820104132e0a2888060607
+
+[libKGE]
+URL: https://github.com/uma-pi1/kge
+Commit: 9bca31fefbfc41d48fdc03396acd0cf42eee9dc4
+
+[Môi trường Thành viên A]
+OS: Windows
+CPU: AMD Ryzen 7 8845H, RAM 32GB, không GPU rời
+Python: Python 3.12.0
+PyTorch: 2.14.1+cpu
+Java: java version "21.0.8" 2025-07-15 LTS
+AnyBURL: <chưa tải, cập nhật sau>

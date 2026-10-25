@@ -1,0 +1,61 @@
+# bpmai_lastrev_caise_inProcess2-distmult-KvsAll-bce
+job.type: train
+
+dataset.name: bpmai_lastrev_caise_inProcess2
+
+# training settings (fixed)
+train:
+  max_epochs: 400
+  auto_correct: True
+  batch_size: 256
+  type: KvsAll
+  loss: bce
+  optimizer: Adagrad
+  optimizer_args.lr: 0.196618
+  lr_scheduler: ReduceLROnPlateau
+  lr_scheduler_args.mode: max
+  lr_scheduler_args.factor: 0.95
+  lr_scheduler_args.threshold: 0.0001
+  lr_scheduler_args.patience: 1
+
+# validation/evaluation settings (fixed)
+valid:
+  every: 5
+  metric: mean_reciprocal_rank_tail #_filtered_with_test
+  filter_with_test: False
+  early_stopping:
+    patience: 10
+    min_threshold.epochs: 50
+    min_threshold.metric_value: 0.05
+
+eval:
+  batch_size: 256
+
+entity_ranking:
+  hits_at_k_s: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 50, 100, 1000]
+  metrics_per:
+    argument_frequency: False
+    head_and_tail: True
+    relation_type: False
+
+# settings for reciprocal relations (if used)
+import: [transe, reciprocal_relations_model]
+reciprocal_relations_model.base_model.type: transe
+model: transe
+
+lookup_embedder:
+  dim: 64
+  initialize: xavier_uniform_
+  initialize_args.uniform_.a: -0.563325
+  initialize_args.xavier_uniform_.gain: 1.0
+  regularize: 'l2'
+  regularize_args.weighted: False 
+
+transe:
+  entity_embedder.regularize_weight: 3.984187e-08
+  relation_embedder.regularize_weight: 4.404248e-08
+  entity_embedder.dropout: -0.379979
+  relation_embedder.dropout: -0.455652
+
+KvsAll:
+  label_smoothing: -0.002619
