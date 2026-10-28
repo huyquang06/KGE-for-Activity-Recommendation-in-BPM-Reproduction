@@ -51,3 +51,4 @@ anyburl/
 # env: chỉ giữ versions.txt
 env/*
 !env/versions.txt
+kge-env/
