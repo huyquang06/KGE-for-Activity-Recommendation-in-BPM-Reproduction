@@ -1,0 +1,9 @@
+train: 105150 triples
+valid: 358 triples
+test: 362 triples
+Tổng triples: 105870
+Số entity (train+valid+test): 70876
+Số relation: 2 ['after', 'hasLabel']
+Số triple theo relation ở train: {'after': 57193, 'hasLabel': 47957}
+Số triple theo relation ở valid: {'hasLabel': 358}
+Số triple theo relation ở test: {'hasLabel': 362}
