@@ -8,10 +8,10 @@ import os
 from filter_and_evaluate import main_eval
 
 # User defined section
-model_ids = ["distmult"] #model_ids = ["RotatE", "distmult", "hitter", "TuckER", "TransE"]
+model_ids = ["TransE"] #model_ids = ["RotatE", "distmult", "hitter", "TuckER", "TransE"]
 job_type = "train" # train or search  # if search please specify the best trial folder
 dataset_name = "bpmai_lastrev_caise_onlyAfter"
-result_folder_name = "20231123-122024-distmult-KvsAll-kl"
+result_folder_name = "transe_onlyAfter_main"
 best_trial_name = "00012"
 
 
@@ -23,21 +23,21 @@ delim = ' '
 topk_pre = 1000
 topk = 1000
 
-# Get the path to the directory containing the script
-script_dir = os.path.dirname(os.path.abspath(__file__))
-# Get the path for the relevant dataset
-datapath = os.path.join(script_dir, "data", dataset_name)
-# Get the path for the best checkpoint file
-if job_type == "train":
-    modelpath_kge = os.path.join(script_dir, "local", "experiments", result_folder_name,
-                                    "checkpoint_best.pt")
-else:
-    modelpath_kge = os.path.join(script_dir, "local", "experiments", result_folder_name,
-                                     best_trial_name, "checkpoint_best.pt")
-# Get the context file path
-context_file = os.path.join(script_dir, "local", "KGE-ActivityRecommendation",
-                            "evaluation_test_context","test_context.txt")
+ # Lấy đường dẫn thư mục gốc của dự án (nhảy ra 2 cấp thư mục)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+script_dir = os.path.abspath(os.path.join(current_dir, "..", ".."))
 
+    # Đường dẫn dataset chuẩn
+datapath = os.path.join(script_dir, "data", dataset_name)
+
+    # Đường dẫn checkpoint mô hình chuẩn
+if job_type == "train":
+    modelpath_kge = os.path.join(script_dir, "local", "experiments", result_folder_name, "checkpoint_best.pt")
+else:
+    modelpath_kge = os.path.join(script_dir, "local", "experiments", result_folder_name, best_trial_name, "checkpoint_best.pt")
+
+    # Đường dẫn file context chuẩn
+context_file = os.path.join(script_dir, "local", "KGE-ActivityRecommendation", "evaluation_test_context", "test_context.txt")
 
 def main(datapath,modelpath_kge):
     
@@ -45,7 +45,8 @@ def main(datapath,modelpath_kge):
     
     for model_id in model_ids:
 
-        outputpath = "/work/kamiriel/kge/local/new results/" + (modelpath_kge.split("experiments/")[1]).split("/")[0]+"-TEST.txt"
+        outputpath = os.path.join(script_dir, "local", "new results", result_folder_name + "-TEST.txt")
+        os.makedirs(os.path.dirname(outputpath), exist_ok=True)
         global prediction_file 
         prediction_file = outputpath
         #print(outputpath)

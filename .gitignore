@@ -52,3 +52,4 @@ docs/_build
 # env: chỉ giữ versions.txt
 env/*
 !env/versions.txt
+kge-env/
