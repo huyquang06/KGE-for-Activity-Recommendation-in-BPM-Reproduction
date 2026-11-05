@@ -38,8 +38,9 @@ docs/_build
 *.ckpt
 
 # AnyBURL (output lớn)
-anyburl/
-*.jar
+/anyburl/
+!results/anyburl
+# *.jar
 
 # CSV: ignore mặc định, trừ kết quả chung của nhóm
 *.csv
