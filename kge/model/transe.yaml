@@ -9,4 +9,5 @@ transe:
     type: lookup_embedder
     +++: +++
   l_norm: 1.
-
+  job:
+    device: cuda
