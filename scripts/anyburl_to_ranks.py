@@ -4,7 +4,7 @@ import pandas as pd
     # Đường dẫn (chạy được cả trên ổ K: hoặc đường dẫn gốc)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-PRED_FILE = os.path.join(BASE_DIR, "results", "anyburl_A", "predictions-100")
+PRED_FILE = os.path.join(BASE_DIR, "results", "anyburl_A", "predictions-with-context")
 META_FILE = os.path.join(BASE_DIR, "results", "test_meta.csv")
 CONTEXT_FILE = os.path.join(
     BASE_DIR, "local", "KGE-ActivityRecommendation", "evaluation_test_context", "test_context.txt"
